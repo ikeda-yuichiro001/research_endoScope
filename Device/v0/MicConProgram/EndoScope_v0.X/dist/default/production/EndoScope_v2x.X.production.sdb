@@ -1,0 +1,169 @@
+[p GLOBOPT AUTOSTATIC IEEE_DBL IEEE_FLT PIC14 PIC14E ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 16F1827 ]
+[d frameptr 6 ]
+"10 C:\Program Files\Microchip\xc8\v2.32\pic\sources\c99\common\sprcadd.c
+[v ___fladd __fladd `(d  1 e 4 0 ]
+"4 C:\Program Files\Microchip\xc8\v2.32\pic\sources\c99\common\Umul8_16.c
+[v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
+"6 C:\Program Files\Microchip\xc8\v2.32\pic\sources\c99\pic\__eeprom.c
+[v ___eecpymem __eecpymem `(v  1 e 1 0 ]
+"39
+[v ___memcpyee __memcpyee `(v  1 e 1 0 ]
+"32 C:\Users\sudolab\Desktop\EndoScope_v2x.X\main.c
+[v _SendUART_Raw SendUART_Raw `(v  1 e 1 0 ]
+"38
+[v _SendUART SendUART `(v  1 e 1 0 ]
+"44
+[v _SendUART64 SendUART64 `(v  1 e 1 0 ]
+"51
+[v _ReadAD ReadAD `(uc  1 e 1 0 ]
+"62
+[v _OnInterrupt OnInterrupt `II(v  1 e 1 0 ]
+"80
+[v _main main `(v  1 e 1 0 ]
+"429 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8\pic\include\proc\pic16f1827.h
+[v _PORTA PORTA `VEuc  1 e 1 @12 ]
+"491
+[v _PORTB PORTB `VEuc  1 e 1 @13 ]
+"1152
+[v _TRISA TRISA `VEuc  1 e 1 @140 ]
+"1214
+[v _TRISB TRISB `VEuc  1 e 1 @141 ]
+"1706
+[v _OSCCON OSCCON `VEuc  1 e 1 @153 ]
+"1847
+[v _ADRESL ADRESL `VEuc  1 e 1 @155 ]
+"1887
+[v _ADCON0 ADCON0 `VEuc  1 e 1 @157 ]
+[s S35 . 1 `uc 1 ADON 1 0 :1:0 
+`uc 1 GO_nDONE 1 0 :1:1 
+`uc 1 CHS0 1 0 :1:2 
+`uc 1 CHS1 1 0 :1:3 
+`uc 1 CHS2 1 0 :1:4 
+`uc 1 CHS3 1 0 :1:5 
+`uc 1 CHS4 1 0 :1:6 
+]
+"1912
+[s S43 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 ADGO 1 0 :1:1 
+`uc 1 CHS 1 0 :5:2 
+]
+[s S47 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 GO 1 0 :1:1 
+]
+[u S50 . 1 `S35 1 . 1 0 `S43 1 . 1 0 `S47 1 . 1 0 ]
+[v _ADCON0bits ADCON0bits `VES50  1 e 1 @157 ]
+"1967
+[v _ADCON1 ADCON1 `VEuc  1 e 1 @158 ]
+[s S97 . 1 `uc 1 LATB0 1 0 :1:0 
+`uc 1 LATB1 1 0 :1:1 
+`uc 1 LATB2 1 0 :1:2 
+`uc 1 LATB3 1 0 :1:3 
+`uc 1 LATB4 1 0 :1:4 
+`uc 1 LATB5 1 0 :1:5 
+`uc 1 LATB6 1 0 :1:6 
+`uc 1 LATB7 1 0 :1:7 
+]
+"2113
+[u S106 . 1 `S97 1 . 1 0 ]
+[v _LATBbits LATBbits `VES106  1 e 1 @269 ]
+"2457
+[v _FVRCON FVRCON `VEuc  1 e 1 @279 ]
+"2779
+[v _APFCON0 APFCON0 `VEuc  1 e 1 @285 ]
+"2841
+[v _APFCON1 APFCON1 `VEuc  1 e 1 @286 ]
+"2861
+[v _ANSELA ANSELA `VEuc  1 e 1 @396 ]
+"2913
+[v _ANSELB ANSELB `VEuc  1 e 1 @397 ]
+"3172
+[v _RCREG RCREG `VEuc  1 e 1 @409 ]
+"3192
+[v _TXREG TXREG `VEuc  1 e 1 @410 ]
+"3228
+[v _SPBRGL SPBRGL `VEuc  1 e 1 @411 ]
+"3278
+[v _SPBRGH SPBRGH `VEuc  1 e 1 @412 ]
+"3311
+[v _RCSTA RCSTA `VEuc  1 e 1 @413 ]
+"3373
+[v _TXSTA TXSTA `VEuc  1 e 1 @414 ]
+"3435
+[v _BAUDCON BAUDCON `VEuc  1 e 1 @415 ]
+"5792
+[v _IOCBP IOCBP `VEuc  1 e 1 @916 ]
+"5862
+[v _IOCBN IOCBN `VEuc  1 e 1 @917 ]
+"5932
+[v _IOCBF IOCBF `VEuc  1 e 1 @918 ]
+"7276
+[v _GIE GIE `VEb  1 e 0 @95 ]
+"7375
+[v _IOCIE IOCIE `VEb  1 e 0 @91 ]
+"7378
+[v _IOCIF IOCIF `VEb  1 e 0 @88 ]
+"7609
+[v _PEIE PEIE `VEb  1 e 0 @94 ]
+"7702
+[v _RCIE RCIE `VEb  1 e 0 @1165 ]
+"7705
+[v _RCIF RCIF `VEb  1 e 0 @141 ]
+"8065
+[v _TRMT TRMT `VEb  1 e 0 @3313 ]
+"19 C:\Users\sudolab\Desktop\EndoScope_v2x.X\main.c
+[v _RENC_DATASHEET RENC_DATASHEET `[4][4]uc  1 e 16 0 ]
+"27
+[v _HD HD `uc  1 e 1 0 ]
+"28
+[v _reData reData `us  1 e 2 0 ]
+[v _sendData sendData `us  1 e 2 0 ]
+[s S22 . 1 `uc 1 SendFlag 1 0 :1:0 
+`uc 1 RENC_LDAT 1 0 :2:1 
+]
+"29
+[u S25 . 1 `S22 1 . 1 0 ]
+[v _data data `S25  1 e 1 0 ]
+"80
+[v _main main `(v  1 e 1 0 ]
+{
+"136
+} 0
+"44
+[v _SendUART64 SendUART64 `(v  1 e 1 0 ]
+{
+[v SendUART64@c c `uc  1 a 1 wreg ]
+[v SendUART64@c c `uc  1 a 1 wreg ]
+"46
+[v SendUART64@c c `uc  1 a 1 1 ]
+"47
+} 0
+"38
+[v _SendUART SendUART `(v  1 e 1 0 ]
+{
+[v SendUART@c c `uc  1 a 1 wreg ]
+[v SendUART@c c `uc  1 a 1 wreg ]
+"40
+[v SendUART@c c `uc  1 a 1 1 ]
+"41
+} 0
+"32
+[v _SendUART_Raw SendUART_Raw `(v  1 e 1 0 ]
+{
+[v SendUART_Raw@c c `uc  1 a 1 wreg ]
+[v SendUART_Raw@c c `uc  1 a 1 wreg ]
+[v SendUART_Raw@c c `uc  1 a 1 0 ]
+"36
+} 0
+"51
+[v _ReadAD ReadAD `(uc  1 e 1 0 ]
+{
+"58
+} 0
+"62
+[v _OnInterrupt OnInterrupt `II(v  1 e 1 0 ]
+{
+"76
+} 0

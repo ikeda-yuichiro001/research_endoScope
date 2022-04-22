@@ -1,0 +1,12 @@
+CLOCK : 32Mhz
+BIT RATE : 115200bps
+          ____
+        -|*   |-  
+     HY -|    |- HX 
+        -|    |-  
+        -|    |-  
+    GND -|    |- VDD 
+        -|    |-  
+    RXD -|    |-  
+    TXD -|    |- RE1 
+        -|____|- RE0 
