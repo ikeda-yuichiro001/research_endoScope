@@ -1,0 +1,16 @@
+#objフォルダ無視
+Game/Game-EndoScope/obj/
+
+
+#.vsフォルダ無視
+Game/.vs/
+
+
+#Libraryフォルダ無視
+Game/Game-EndoScope/Library/
+
+#Tempフォルダ無視
+Game/Game-EndoScope/Temp
+  
+#パッケージのバージョン情報を無視
+Game/Game-EndoScope/Packages/manifest.json

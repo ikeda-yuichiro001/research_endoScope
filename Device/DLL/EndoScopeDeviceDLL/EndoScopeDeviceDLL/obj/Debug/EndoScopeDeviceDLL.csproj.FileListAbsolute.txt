@@ -1,0 +1,6 @@
+C:\Users\sudolab\Videos\research_endoScope\Device\DLL\EndoScopeDeviceDLL\EndoScopeDeviceDLL\bin\Debug\EndoScopeDeviceDLL.dll
+C:\Users\sudolab\Videos\research_endoScope\Device\DLL\EndoScopeDeviceDLL\EndoScopeDeviceDLL\bin\Debug\EndoScopeDeviceDLL.pdb
+C:\Users\sudolab\Videos\research_endoScope\Device\DLL\EndoScopeDeviceDLL\EndoScopeDeviceDLL\obj\Debug\EndoScopeDeviceDLL.csproj.AssemblyReference.cache
+C:\Users\sudolab\Videos\research_endoScope\Device\DLL\EndoScopeDeviceDLL\EndoScopeDeviceDLL\obj\Debug\EndoScopeDeviceDLL.csproj.CoreCompileInputs.cache
+C:\Users\sudolab\Videos\research_endoScope\Device\DLL\EndoScopeDeviceDLL\EndoScopeDeviceDLL\obj\Debug\EndoScopeDeviceDLL.dll
+C:\Users\sudolab\Videos\research_endoScope\Device\DLL\EndoScopeDeviceDLL\EndoScopeDeviceDLL\obj\Debug\EndoScopeDeviceDLL.pdb
