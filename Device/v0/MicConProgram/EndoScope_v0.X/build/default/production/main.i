@@ -4241,29 +4241,27 @@ extern __bank0 __bit __timeout;
 #pragma config WRT = OFF, PLLEN = OFF, STVREN = ON, BORV = HI, LVP = OFF
 
 
+unsigned char HD,SendFlag;
+unsigned long reData, sendData;
+char RE_L = 0;
+signed char ReDataBase[] = {0,-1,1,0, 1,0,0,-1, -1,0,0,1, 0,1,-1,0};
 
-
-
-typedef union
+void __attribute__((picinterrupt(("")))) OnInterrupt(void)
 {
-    struct
+    if (IOCIF)
     {
-        unsigned SendFlag : 1;
-        unsigned RENC_LDAT : 2;
-    };
-} DATA;
+        RE_L = (RE_L << 2) | (PORTB >> 4 & 0x3);
+        reData += ReDataBase[RE_L & 0x0F];
+        IOCBF = 0;
+    }
 
-char RENC_DATASHEET[4][4] =
-{
-    {0,1,-1,0},
-    {-1,0,0,1},
-    {1,0,0,-1},
-    {0,-1,1,0},
-};
-
-unsigned char HD;
-unsigned short reData, sendData;
-DATA data;
+    if (RCIF)
+    {
+        if(RCREG == '\n') SendFlag = 1;
+        else if(RCREG == 'r') reData = 8000000;
+        RCIF = 0;
+    }
+}
 
 
 void SendUART_Raw(unsigned char c)
@@ -4272,17 +4270,11 @@ void SendUART_Raw(unsigned char c)
     TXREG = c;
 }
 
+
 void SendUART(unsigned char c)
-{
-    SendUART_Raw("0123456789ABCDEF"[c]);
-}
-
-
-void SendUART64(unsigned char c)
 {
     SendUART_Raw("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-"[c]);
 }
-
 
 
 unsigned char ReadAD()
@@ -4293,25 +4285,6 @@ unsigned char ReadAD()
     while (ADCON0bits.GO_nDONE);
     return ADRESL;
 }
-
-
-
-void __attribute__((picinterrupt(("")))) OnInterrupt(void)
-{
-    if (IOCIF)
-    {
-        reData += RENC_DATASHEET[data.RENC_LDAT][PORTB >> 4 & 0x3];
-        data.RENC_LDAT = PORTB >> 4 & 0x3;
-    }
-
-    if (RCIF)
-    {
-        if(RCREG == '\n') data.SendFlag = 1;
-        else if(RCREG == 'r') reData = 8000000;
-        RCIF = 0;
-    }
-}
-
 
 
 void main()
@@ -4340,11 +4313,11 @@ void main()
     PEIE = 1;
     GIE = 1;
     reData = 8000000;
-    data.RENC_LDAT = PORTB >> 4 & 0x3;
     LATBbits.LATB0 = 1;
+
     for (;;)
     {
-        while(!data.SendFlag);
+        while(!SendFlag);
 
 
         ADCON0 = 0x01;
@@ -4360,14 +4333,14 @@ void main()
 
 
         sendData = reData;
-        SendUART64(sendData >> 18);
-        SendUART64(sendData >> 12 & 0x3F);
-        SendUART64(sendData >> 6 & 0x3F);
-        SendUART64(sendData & 0x3F);
+        SendUART(sendData >> 18 & 0x3F);
+        SendUART(sendData >> 12 & 0x3F);
+        SendUART(sendData >> 6 & 0x3F);
+        SendUART(sendData & 0x3F);
 
 
         SendUART_Raw('\n');
-        data.SendFlag = 0;
+        SendFlag = 0;
     }
 
 }

@@ -3,30 +3,37 @@
 #pragma config CPD = OFF, BOREN = ON, CLKOUTEN = OFF, IESO = OFF, FCMEN = OFF
 #pragma config WRT = OFF, PLLEN = OFF, STVREN = ON, BORV = HI, LVP = OFF
 #define REnc_def 8000000
-#define X 0
-#define P 1
-#define M -1 
  
-typedef union 
-{
-    struct 
-    {
-        unsigned SendFlag : 1;
-        unsigned RENC_LDAT : 2; 
-    };
-} DATA;
- 
-char RENC_DATASHEET[4][4] =//[nA << 1 + nB][]
-{
-    {0,P,M,X},
-    {M,0,X,P},
-    {P,X,0,M},
-    {X,M,P,0}, 
-};
+unsigned char HD,SendFlag;
+unsigned long reData, sendData;
+char rL = 0; 
+signed char DB[] = {0,-1,1,0,  1,0,0,-1,  -1,0,0,1,  0,1,-1,0}; 
 
-unsigned char HD;
-unsigned short reData, sendData;
-DATA data;
+void __interrupt() OnInterrupt(void)
+{
+    
+    /*これに後で置き換える!!
+    data.N = PORTAbits.RA5;
+    if(data.N != data.L)
+    { 
+          rot += data.N ^ PORTAbits.RA4 ? -1 : 1;
+          data.L = data.N;
+    }
+     */
+    if (IOCIF)
+    { 
+        rL = (rL << 2) | (PORTB >> 4 & 0x3);   
+        reData += DB[rL & 0x0F];
+        IOCBF = 0;
+    }
+    
+    if (RCIF)
+    {
+        if(RCREG == '\n') SendFlag = 1;   
+        else if(RCREG == 'r') reData = 8000000;
+        RCIF = 0;
+    }
+}
 
 
 void SendUART_Raw(unsigned char c)
@@ -35,17 +42,11 @@ void SendUART_Raw(unsigned char c)
     TXREG = c;
 }
 
-void SendUART(unsigned char c) 
-{ 
-    SendUART_Raw("0123456789ABCDEF"[c]);  
-}
 
-
-void SendUART64(unsigned char c)
+void SendUART(unsigned char c)
 {
     SendUART_Raw("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-"[c]);  
 }
- 
  
 
 unsigned char ReadAD()
@@ -58,28 +59,10 @@ unsigned char ReadAD()
 }
 
 
-
-void __interrupt() OnInterrupt(void)
-{
-    if (IOCIF)
-    { 
-        reData += RENC_DATASHEET[data.RENC_LDAT][PORTB >> 4 & 0x3];
-        data.RENC_LDAT = PORTB >> 4 & 0x3;
-    }
-    
-    if (RCIF)
-    {
-        if(RCREG == '\n') data.SendFlag = 1;   
-        else if(RCREG == 'r') reData = 8000000;
-        RCIF = 0;
-    }
-}
-
-
-
 void main()
 {
     OSCCON = 0xF0;
+    reData = 8000000;
     ANSELA = 0x09;
     ANSELB = 0x00;
     TRISA = 0xFF;
@@ -102,12 +85,11 @@ void main()
     RCIE = 1;
     PEIE = 1;
     GIE = 1; 
-    reData = 8000000;
-    data.RENC_LDAT = PORTB >> 4 & 0x3;
     LATBbits.LATB0 = 1;
+    
     for (;;)
     {
-        while(!data.SendFlag);
+        while(!SendFlag);
         
         //handle X-----------
         ADCON0 = 0x01;  
@@ -123,16 +105,14 @@ void main()
         
         //Rotation ------------------------------
         sendData = reData;
-        SendUART64(sendData >> 18);
-        SendUART64(sendData >> 12 & 0x3F);
-        SendUART64(sendData >> 6 & 0x3F);
-        SendUART64(sendData & 0x3F);
+        SendUART(sendData >> 18 & 0x3F);
+        SendUART(sendData >> 12 & 0x3F);
+        SendUART(sendData >>  6 & 0x3F);
+        SendUART(sendData       & 0x3F);
         
         //End -----------------------------------
         SendUART_Raw('\n');
-        data.SendFlag = 0;
+        SendFlag = 0;
     }
     
 }
-
-///test_Serial/testAD/testRenc

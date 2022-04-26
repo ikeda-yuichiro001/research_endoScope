@@ -11,17 +11,15 @@
 [v ___eecpymem __eecpymem `(v  1 e 1 0 ]
 "39
 [v ___memcpyee __memcpyee `(v  1 e 1 0 ]
-"32 C:\Users\sudolab\Desktop\EndoScope_v0.X\main.c
-[v _SendUART_Raw SendUART_Raw `(v  1 e 1 0 ]
-"38
-[v _SendUART SendUART `(v  1 e 1 0 ]
-"44
-[v _SendUART64 SendUART64 `(v  1 e 1 0 ]
-"51
-[v _ReadAD ReadAD `(uc  1 e 1 0 ]
-"62
+"12 C:\Users\sudolab\Videos\research_endoScope\Device\v0\MicConProgram\EndoScope_v0.X\main.c
 [v _OnInterrupt OnInterrupt `II(v  1 e 1 0 ]
-"80
+"30
+[v _SendUART_Raw SendUART_Raw `(v  1 e 1 0 ]
+"37
+[v _SendUART SendUART `(v  1 e 1 0 ]
+"43
+[v _ReadAD ReadAD `(uc  1 e 1 0 ]
+"53
 [v _main main `(v  1 e 1 0 ]
 "429 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8\pic\include\proc\pic16f1827.h
 [v _PORTA PORTA `VEuc  1 e 1 @12 ]
@@ -57,7 +55,7 @@
 [v _ADCON0bits ADCON0bits `VES50  1 e 1 @157 ]
 "1967
 [v _ADCON1 ADCON1 `VEuc  1 e 1 @158 ]
-[s S97 . 1 `uc 1 LATB0 1 0 :1:0 
+[s S92 . 1 `uc 1 LATB0 1 0 :1:0 
 `uc 1 LATB1 1 0 :1:1 
 `uc 1 LATB2 1 0 :1:2 
 `uc 1 LATB3 1 0 :1:3 
@@ -67,8 +65,8 @@
 `uc 1 LATB7 1 0 :1:7 
 ]
 "2113
-[u S106 . 1 `S97 1 . 1 0 ]
-[v _LATBbits LATBbits `VES106  1 e 1 @269 ]
+[u S101 . 1 `S92 1 . 1 0 ]
+[v _LATBbits LATBbits `VES101  1 e 1 @269 ]
 "2457
 [v _FVRCON FVRCON `VEuc  1 e 1 @279 ]
 "2779
@@ -113,57 +111,45 @@
 [v _RCIF RCIF `VEb  1 e 0 @141 ]
 "8065
 [v _TRMT TRMT `VEb  1 e 0 @3313 ]
-"19 C:\Users\sudolab\Desktop\EndoScope_v0.X\main.c
-[v _RENC_DATASHEET RENC_DATASHEET `[4][4]uc  1 e 16 0 ]
-"27
+"7 C:\Users\sudolab\Videos\research_endoScope\Device\v0\MicConProgram\EndoScope_v0.X\main.c
 [v _HD HD `uc  1 e 1 0 ]
-"28
-[v _reData reData `us  1 e 2 0 ]
-[v _sendData sendData `us  1 e 2 0 ]
-[s S22 . 1 `uc 1 SendFlag 1 0 :1:0 
-`uc 1 RENC_LDAT 1 0 :2:1 
-]
-"29
-[u S25 . 1 `S22 1 . 1 0 ]
-[v _data data `S25  1 e 1 0 ]
-"80
+[v _SendFlag SendFlag `uc  1 e 1 0 ]
+"8
+[v _reData reData `ul  1 e 4 0 ]
+[v _sendData sendData `ul  1 e 4 0 ]
+"9
+[v _RE_L RE_L `uc  1 e 1 0 ]
+"10
+[v _ReDataBase ReDataBase `[16]c  1 e 16 0 ]
+"53
 [v _main main `(v  1 e 1 0 ]
 {
-"136
+"109
 } 0
-"44
-[v _SendUART64 SendUART64 `(v  1 e 1 0 ]
-{
-[v SendUART64@c c `uc  1 a 1 wreg ]
-[v SendUART64@c c `uc  1 a 1 wreg ]
-"46
-[v SendUART64@c c `uc  1 a 1 1 ]
-"47
-} 0
-"38
+"37
 [v _SendUART SendUART `(v  1 e 1 0 ]
 {
 [v SendUART@c c `uc  1 a 1 wreg ]
 [v SendUART@c c `uc  1 a 1 wreg ]
+"39
+[v SendUART@c c `uc  1 a 1 5 ]
 "40
-[v SendUART@c c `uc  1 a 1 1 ]
-"41
 } 0
-"32
+"30
 [v _SendUART_Raw SendUART_Raw `(v  1 e 1 0 ]
 {
 [v SendUART_Raw@c c `uc  1 a 1 wreg ]
 [v SendUART_Raw@c c `uc  1 a 1 wreg ]
-[v SendUART_Raw@c c `uc  1 a 1 0 ]
-"36
+[v SendUART_Raw@c c `uc  1 a 1 4 ]
+"34
 } 0
-"51
+"43
 [v _ReadAD ReadAD `(uc  1 e 1 0 ]
 {
-"58
+"50
 } 0
-"62
+"12
 [v _OnInterrupt OnInterrupt `II(v  1 e 1 0 ]
 {
-"76
+"27
 } 0
