@@ -13,13 +13,13 @@
 [v ___memcpyee __memcpyee `(v  1 e 1 0 ]
 "12 C:\Users\sudolab\Videos\research_endoScope\Device\v0\MicConProgram\EndoScope_v0.X\main.c
 [v _OnInterrupt OnInterrupt `II(v  1 e 1 0 ]
-"30
+"29
 [v _SendUART_Raw SendUART_Raw `(v  1 e 1 0 ]
-"37
+"36
 [v _SendUART SendUART `(v  1 e 1 0 ]
-"43
-[v _ReadAD ReadAD `(uc  1 e 1 0 ]
-"53
+"42
+[v _SendAD SendAD `(v  1 e 1 0 ]
+"54
 [v _main main `(v  1 e 1 0 ]
 "429 C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8\pic\include\proc\pic16f1827.h
 [v _PORTA PORTA `VEuc  1 e 1 @12 ]
@@ -33,6 +33,8 @@
 [v _OSCCON OSCCON `VEuc  1 e 1 @153 ]
 "1847
 [v _ADRESL ADRESL `VEuc  1 e 1 @155 ]
+"1867
+[v _ADRESH ADRESH `VEuc  1 e 1 @156 ]
 "1887
 [v _ADCON0 ADCON0 `VEuc  1 e 1 @157 ]
 [s S35 . 1 `uc 1 ADON 1 0 :1:0 
@@ -55,7 +57,7 @@
 [v _ADCON0bits ADCON0bits `VES50  1 e 1 @157 ]
 "1967
 [v _ADCON1 ADCON1 `VEuc  1 e 1 @158 ]
-[s S92 . 1 `uc 1 LATB0 1 0 :1:0 
+[s S93 . 1 `uc 1 LATB0 1 0 :1:0 
 `uc 1 LATB1 1 0 :1:1 
 `uc 1 LATB2 1 0 :1:2 
 `uc 1 LATB3 1 0 :1:3 
@@ -65,8 +67,8 @@
 `uc 1 LATB7 1 0 :1:7 
 ]
 "2113
-[u S101 . 1 `S92 1 . 1 0 ]
-[v _LATBbits LATBbits `VES101  1 e 1 @269 ]
+[u S102 . 1 `S93 1 . 1 0 ]
+[v _LATBbits LATBbits `VES102  1 e 1 @269 ]
 "2457
 [v _FVRCON FVRCON `VEuc  1 e 1 @279 ]
 "2779
@@ -118,38 +120,38 @@
 [v _reData reData `ul  1 e 4 0 ]
 [v _sendData sendData `ul  1 e 4 0 ]
 "9
-[v _RE_L RE_L `uc  1 e 1 0 ]
+[v _rL rL `uc  1 e 1 0 ]
 "10
-[v _ReDataBase ReDataBase `[16]c  1 e 16 0 ]
-"53
+[v _DB DB `[16]c  1 e 16 0 ]
+"54
 [v _main main `(v  1 e 1 0 ]
 {
-"109
+"96
 } 0
-"37
+"42
+[v _SendAD SendAD `(v  1 e 1 0 ]
+{
+"51
+} 0
+"36
 [v _SendUART SendUART `(v  1 e 1 0 ]
 {
 [v SendUART@c c `uc  1 a 1 wreg ]
 [v SendUART@c c `uc  1 a 1 wreg ]
-"39
+"38
 [v SendUART@c c `uc  1 a 1 5 ]
-"40
+"39
 } 0
-"30
+"29
 [v _SendUART_Raw SendUART_Raw `(v  1 e 1 0 ]
 {
 [v SendUART_Raw@c c `uc  1 a 1 wreg ]
 [v SendUART_Raw@c c `uc  1 a 1 wreg ]
 [v SendUART_Raw@c c `uc  1 a 1 4 ]
-"34
-} 0
-"43
-[v _ReadAD ReadAD `(uc  1 e 1 0 ]
-{
-"50
+"33
 } 0
 "12
 [v _OnInterrupt OnInterrupt `II(v  1 e 1 0 ]
 {
-"27
+"26
 } 0

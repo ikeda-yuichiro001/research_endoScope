@@ -4243,18 +4243,17 @@ extern __bank0 __bit __timeout;
 
 unsigned char HD,SendFlag;
 unsigned long reData, sendData;
-char RE_L = 0;
-signed char ReDataBase[] = {0,-1,1,0, 1,0,0,-1, -1,0,0,1, 0,1,-1,0};
+char rL = 0;
+signed char DB[] = {0,-1,1,0, 1,0,0,-1, -1,0,0,1, 0,1,-1,0};
 
 void __attribute__((picinterrupt(("")))) OnInterrupt(void)
 {
     if (IOCIF)
     {
-        RE_L = (RE_L << 2) | (PORTB >> 4 & 0x3);
-        reData += ReDataBase[RE_L & 0x0F];
+        rL = (rL << 2) | (PORTB >> 4 & 0x3);
+        reData += DB[rL & 0x0F];
         IOCBF = 0;
     }
-
     if (RCIF)
     {
         if(RCREG == '\n') SendFlag = 1;
@@ -4277,19 +4276,22 @@ void SendUART(unsigned char c)
 }
 
 
-unsigned char ReadAD()
+void SendAD()
 {
-    _delay(400);
+    _delay(500);
     ADCON0bits.GO = 1;
     __asm("nop");
     while (ADCON0bits.GO_nDONE);
-    return ADRESL;
+    HD = ((((ADRESH & 0x03) << 8) + ADRESL) >> 2) & 0x0FF;
+    SendUART(HD >> 4 & 0xF);
+    SendUART(HD & 0xF);
 }
 
 
 void main()
 {
     OSCCON = 0xF0;
+    reData = 8000000;
     ANSELA = 0x09;
     ANSELB = 0x00;
     TRISA = 0xFF;
@@ -4303,34 +4305,21 @@ void main()
     TXSTA = 0x24;
     RCSTA = 0x90;
     FVRCON = 0x00;
-    ADCON1 = 0x50;
+    ADCON1 = 0xd0;
     IOCBN = 0x30;
     IOCBP = 0x30;
     IOCBF = 0;
     IOCIE = 1;
     RCIF = 0;
-    RCIE = 1;
-    PEIE = 1;
-    GIE = 1;
-    reData = 8000000;
+    RCIE = PEIE = GIE = 1;
     LATBbits.LATB0 = 1;
 
     for (;;)
     {
         while(!SendFlag);
 
-
-        ADCON0 = 0x01;
-        HD = ReadAD();
-        SendUART(HD >> 4);
-        SendUART(HD & 0xF);
-
-
-        ADCON0 = 0x0D;
-        HD = ReadAD();
-        SendUART(HD >> 4);
-        SendUART(HD & 0xF);
-
+        ADCON0 = 0x01; SendAD();
+        ADCON0 = 0x0D; SendAD();
 
         sendData = reData;
         SendUART(sendData >> 18 & 0x3F);
@@ -4338,9 +4327,7 @@ void main()
         SendUART(sendData >> 6 & 0x3F);
         SendUART(sendData & 0x3F);
 
-
         SendUART_Raw('\n');
         SendFlag = 0;
     }
-
 }

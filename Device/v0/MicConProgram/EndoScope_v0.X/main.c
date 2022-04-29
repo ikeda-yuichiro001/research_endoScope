@@ -3,30 +3,20 @@
 #pragma config CPD = OFF, BOREN = ON, CLKOUTEN = OFF, IESO = OFF, FCMEN = OFF
 #pragma config WRT = OFF, PLLEN = OFF, STVREN = ON, BORV = HI, LVP = OFF
 #define REnc_def 8000000
- 
+
 unsigned char HD,SendFlag;
 unsigned long reData, sendData;
 char rL = 0; 
 signed char DB[] = {0,-1,1,0,  1,0,0,-1,  -1,0,0,1,  0,1,-1,0}; 
 
 void __interrupt() OnInterrupt(void)
-{
-    
-    /*これに後で置き換える!!
-    data.N = PORTAbits.RA5;
-    if(data.N != data.L)
-    { 
-          rot += data.N ^ PORTAbits.RA4 ? -1 : 1;
-          data.L = data.N;
-    }
-     */
+{ 
     if (IOCIF)
     { 
         rL = (rL << 2) | (PORTB >> 4 & 0x3);   
         reData += DB[rL & 0x0F];
         IOCBF = 0;
     }
-    
     if (RCIF)
     {
         if(RCREG == '\n') SendFlag = 1;   
@@ -47,17 +37,19 @@ void SendUART(unsigned char c)
 {
     SendUART_Raw("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-"[c]);  
 }
- 
+  
 
-unsigned char ReadAD()
+void SendAD()
 { 
-    _delay(400);
+    _delay(500);
     ADCON0bits.GO = 1;
     asm("nop");
-    while (ADCON0bits.GO_nDONE);
-    return ADRESL;
+    while (ADCON0bits.GO_nDONE); 
+    HD = ((((ADRESH & 0x03) << 8) + ADRESL) >> 2) & 0x0FF;
+    SendUART(HD >> 4 & 0xF);
+    SendUART(HD & 0xF);
 }
-
+ 
 
 void main()
 {
@@ -68,51 +60,37 @@ void main()
     TRISA = 0xFF;
     TRISB = 0xFA;
     PORTA = PORTB =  0x00; 
-    APFCON0= 0x00;
-    APFCON1= 0x00;
+    APFCON0= 0x00;  
+    APFCON1= 0x00; 
     BAUDCON= 0x08;
     SPBRGH = 0x00;
     SPBRGL = 0x44;
     TXSTA = 0x24;
     RCSTA = 0x90;    
     FVRCON = 0x00;
-    ADCON1 = 0x50;   
+    ADCON1 = 0xd0;   
     IOCBN = 0x30;
     IOCBP = 0x30;
     IOCBF = 0;
     IOCIE = 1;
-    RCIF = 0;
-    RCIE = 1;
-    PEIE = 1;
-    GIE = 1; 
+    RCIF = 0; 
+    RCIE = PEIE = GIE = 1; 
     LATBbits.LATB0 = 1;
     
     for (;;)
     {
         while(!SendFlag);
-        
-        //handle X-----------
-        ADCON0 = 0x01;  
-        HD = ReadAD();
-        SendUART(HD >> 4);
-        SendUART(HD & 0xF);
-        
-        //handle Y------------
-        ADCON0 = 0x0D; 
-        HD = ReadAD();
-        SendUART(HD >> 4);
-        SendUART(HD & 0xF);
-        
+        //handles Data-----------
+        ADCON0 = 0x01; SendAD(); //handle X  
+        ADCON0 = 0x0D; SendAD(); //handle Y 
         //Rotation ------------------------------
         sendData = reData;
         SendUART(sendData >> 18 & 0x3F);
         SendUART(sendData >> 12 & 0x3F);
         SendUART(sendData >>  6 & 0x3F);
         SendUART(sendData       & 0x3F);
-        
         //End -----------------------------------
         SendUART_Raw('\n');
         SendFlag = 0;
     }
-    
 }

@@ -45,6 +45,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "1912
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8\pic\include\proc\pic16f1827.h: 1912: extern volatile ADCON0bits_t ADCON0bits __attribute__((address(0x09D)));
 [v _ADCON0bits `VS102 ~T0 @X0 0 e@157 ]
+"1867
+[; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8\pic\include\proc\pic16f1827.h: 1867: extern volatile unsigned char ADRESH __attribute__((address(0x09C)));
+[v _ADRESH `Vuc ~T0 @X0 0 e@156 ]
 "1847
 [; ;C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8\pic\include\proc\pic16f1827.h: 1847: extern volatile unsigned char ADRESL __attribute__((address(0x09B)));
 [v _ADRESL `Vuc ~T0 @X0 0 e@155 ]
@@ -604,10 +607,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;main.c: 2: unsigned long reData, sendData;
 [p x FOSC  =  INTOSC   WDTE  =  OFF   PWRTE  =  ON   MCLRE  =  OFF   CP  =  OFF ]
 "3
-[; ;main.c: 3: char RE_L = 0;
+[; ;main.c: 3: char rL = 0;
 [p x CPD  =  OFF   BOREN  =  ON   CLKOUTEN  =  OFF   IESO  =  OFF   FCMEN  =  OFF ]
 "4
-[; ;main.c: 4: signed char ReDataBase[] = {0,-1,1,0, 1,0,0,-1, -1,0,0,1, 0,1,-1,0};
+[; ;main.c: 4: signed char DB[] = {0,-1,1,0, 1,0,0,-1, -1,0,0,1, 0,1,-1,0};
 [p x WRT  =  OFF   PLLEN  =  OFF   STVREN  =  ON   BORV  =  HI   LVP  =  OFF ]
 "7
 [; ;main.c: 7: {
@@ -619,14 +622,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _sendData `ul ~T0 @X0 1 e ]
 "9
 [; ;main.c: 9:     {
-[v _RE_L `uc ~T0 @X0 1 e ]
-[i _RE_L
+[v _rL `uc ~T0 @X0 1 e ]
+[i _rL
 -> -> 0 `i `uc
 ]
 "10
-[; ;main.c: 10:         RE_L = (RE_L << 2) | (PORTB >> 4 & 0x3);
-[v _ReDataBase `c ~T0 @X0 -> 16 `i e ]
-[i _ReDataBase
+[; ;main.c: 10:         rL = (rL << 2) | (PORTB >> 4 & 0x3);
+[v _DB `c ~T0 @X0 -> 16 `i e ]
+[i _DB
 :U ..
 -> -> 0 `i `c
 -> -U -> 1 `i `c
@@ -656,279 +659,261 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _OnInterrupt ]
 [f ]
 "14
-[; ;main.c: 14: 
+[; ;main.c: 14:     if (RCIF)
 [e $ ! _IOCIF 355  ]
 "15
-[; ;main.c: 15:     if (RCIF)
+[; ;main.c: 15:     {
 {
 "16
-[; ;main.c: 16:     {
-[e = _RE_L -> | << -> _RE_L `i -> 2 `i & >> -> _PORTB `i -> 4 `i -> 3 `i `uc ]
+[; ;main.c: 16:         if(RCREG == '\n') SendFlag = 1;
+[e = _rL -> | << -> _rL `i -> 2 `i & >> -> _PORTB `i -> 4 `i -> 3 `i `uc ]
 "17
-[; ;main.c: 17:         if(RCREG == '\n') SendFlag = 1;
-[e =+ _reData -> -> *U + &U _ReDataBase * -> -> & -> _RE_L `i -> 15 `i `ui `ux -> -> # *U &U _ReDataBase `ui `ux `l `ul ]
+[; ;main.c: 17:         else if(RCREG == 'r') reData = 8000000;
+[e =+ _reData -> -> *U + &U _DB * -> -> & -> _rL `i -> 15 `i `ui `ux -> -> # *U &U _DB `ui `ux `l `ul ]
 "18
-[; ;main.c: 18:         else if(RCREG == 'r') reData = 8000000;
+[; ;main.c: 18:         RCIF = 0;
 [e = _IOCBF -> -> 0 `i `uc ]
 "19
-[; ;main.c: 19:         RCIF = 0;
+[; ;main.c: 19:     }
 }
 [e :U 355 ]
-"21
-[; ;main.c: 21: }
+"20
+[; ;main.c: 20: }
 [e $ ! _RCIF 356  ]
+"21
+[; ;main.c: 21: 
+{
 "22
 [; ;main.c: 22: 
-{
-"23
-[; ;main.c: 23: 
 [e $ ! == -> _RCREG `ui -> 10 `ui 357  ]
 [e = _SendFlag -> -> 1 `i `uc ]
 [e $U 358  ]
-"24
-[; ;main.c: 24: void SendUART_Raw(unsigned char c)
+"23
+[; ;main.c: 23: void SendUART_Raw(unsigned char c)
 [e :U 357 ]
 [e $ ! == -> _RCREG `ui -> 114 `ui 359  ]
 [e = _reData -> -> 8000000 `l `ul ]
 [e :U 359 ]
 [e :U 358 ]
-"25
-[; ;main.c: 25: {
+"24
+[; ;main.c: 24: {
 [e = _RCIF -> -> 0 `i `b ]
-"26
-[; ;main.c: 26:     while(!TRMT);
+"25
+[; ;main.c: 25:     while(!TRMT);
 }
 [e :U 356 ]
-"27
-[; ;main.c: 27:     TXREG = c;
+"26
+[; ;main.c: 26:     TXREG = c;
 [e :UE 354 ]
 }
-"30
-[; ;main.c: 30: 
+"29
+[; ;main.c: 29: 
 [v _SendUART_Raw `(v ~T0 @X0 1 ef1`uc ]
-"31
-[; ;main.c: 31: void SendUART(unsigned char c)
+"30
+[; ;main.c: 30: void SendUART(unsigned char c)
 {
 [e :U _SendUART_Raw ]
-"30
-[; ;main.c: 30: 
+"29
+[; ;main.c: 29: 
 [v _c `uc ~T0 @X0 1 r1 ]
-"31
-[; ;main.c: 31: void SendUART(unsigned char c)
+"30
+[; ;main.c: 30: void SendUART(unsigned char c)
 [f ]
-"32
-[; ;main.c: 32: {
+"31
+[; ;main.c: 31: {
 [e $U 361  ]
 [e :U 362 ]
 [e :U 361 ]
 [e $ ! _TRMT 362  ]
 [e :U 363 ]
-"33
-[; ;main.c: 33:     SendUART_Raw("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-"[c]);
+"32
+[; ;main.c: 32:     SendUART_Raw("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-"[c]);
 [e = _TXREG _c ]
-"34
-[; ;main.c: 34: }
+"33
+[; ;main.c: 33: }
 [e :UE 360 ]
 }
-"37
-[; ;main.c: 37: unsigned char ReadAD()
+"36
+[; ;main.c: 36: void SendAD()
 [v _SendUART `(v ~T0 @X0 1 ef1`uc ]
-"38
-[; ;main.c: 38: {
+"37
+[; ;main.c: 37: {
 {
 [e :U _SendUART ]
-"37
-[; ;main.c: 37: unsigned char ReadAD()
+"36
+[; ;main.c: 36: void SendAD()
 [v _c `uc ~T0 @X0 1 r1 ]
-"38
-[; ;main.c: 38: {
+"37
+[; ;main.c: 37: {
 [f ]
-"39
-[; ;main.c: 39:     _delay(400);
+"38
+[; ;main.c: 38:     _delay(500);
 [e ( _SendUART_Raw (1 -> *U + :s 1C * -> _c `ux -> -> # *U :s 1C `ui `ux `uc ]
-"40
-[; ;main.c: 40:     ADCON0bits.GO = 1;
+"39
+[; ;main.c: 39:     ADCON0bits.GO = 1;
 [e :UE 364 ]
 }
+"42
+[; ;main.c: 42:     HD = ((((ADRESH & 0x03) << 8) + ADRESL) >> 2) & 0x0FF;
+[v _SendAD `(v ~T0 @X0 1 ef ]
 "43
-[; ;main.c: 43:     return ADRESL;
-[v _ReadAD `(uc ~T0 @X0 1 ef ]
-"44
-[; ;main.c: 44: }
+[; ;main.c: 43:     SendUART(HD >> 4 & 0xF);
 {
-[e :U _ReadAD ]
+[e :U _SendAD ]
 [f ]
+"44
+[; ;main.c: 44:     SendUART(HD & 0xF);
+[e ( __delay (1 -> -> -> 500 `i `l `ul ]
 "45
-[; ;main.c: 45: 
-[e ( __delay (1 -> -> -> 400 `i `l `ul ]
+[; ;main.c: 45: }
+[e = . . _ADCON0bits 2 1 -> -> 1 `i `uc ]
 "46
 [; ;main.c: 46: 
-[e = . . _ADCON0bits 2 1 -> -> 1 `i `uc ]
-"47
-[; ;main.c: 47: void main()
 [; <" nop ;# ">
-"48
-[; ;main.c: 48: {
+"47
+[; ;main.c: 47: 
 [e $U 366  ]
 [e :U 367 ]
 [e :U 366 ]
 [e $ != -> . . _ADCON0bits 0 1 `i -> 0 `i 367  ]
 [e :U 368 ]
+"48
+[; ;main.c: 48: void main()
+[e = _HD -> & >> + << & -> _ADRESH `i -> 3 `i -> 8 `i -> _ADRESL `i -> 2 `i -> 255 `i `uc ]
 "49
-[; ;main.c: 49:     OSCCON = 0xF0;
-[e ) _ADRESL ]
-[e $UE 365  ]
+[; ;main.c: 49: {
+[e ( _SendUART (1 -> & >> -> _HD `i -> 4 `i -> 15 `i `uc ]
 "50
-[; ;main.c: 50:     ANSELA = 0x09;
+[; ;main.c: 50:     OSCCON = 0xF0;
+[e ( _SendUART (1 -> & -> _HD `i -> 15 `i `uc ]
+"51
+[; ;main.c: 51:     reData = 8000000;
 [e :UE 365 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"53
-[; ;main.c: 53:     TRISB = 0xFA;
-[v _main `(v ~T0 @X0 1 ef ]
 "54
-[; ;main.c: 54:     PORTA = PORTB = 0x00;
+[; ;main.c: 54:     TRISA = 0xFF;
+[v _main `(v ~T0 @X0 1 ef ]
+"55
+[; ;main.c: 55:     TRISB = 0xFA;
 {
 [e :U _main ]
 [f ]
-"55
-[; ;main.c: 55:     APFCON0= 0x00;
-[e = _OSCCON -> -> 240 `i `uc ]
 "56
-[; ;main.c: 56:     APFCON1= 0x00;
-[e = _ANSELA -> -> 9 `i `uc ]
+[; ;main.c: 56:     PORTA = PORTB = 0x00;
+[e = _OSCCON -> -> 240 `i `uc ]
 "57
-[; ;main.c: 57:     BAUDCON= 0x08;
-[e = _ANSELB -> -> 0 `i `uc ]
-"58
-[; ;main.c: 58:     SPBRGH = 0x00;
-[e = _TRISA -> -> 255 `i `uc ]
-"59
-[; ;main.c: 59:     SPBRGL = 0x44;
-[e = _TRISB -> -> 250 `i `uc ]
-"60
-[; ;main.c: 60:     TXSTA = 0x24;
-[e = _PORTA = _PORTB -> -> 0 `i `uc ]
-"61
-[; ;main.c: 61:     RCSTA = 0x90;
-[e = _APFCON0 -> -> 0 `i `uc ]
-"62
-[; ;main.c: 62:     FVRCON = 0x00;
-[e = _APFCON1 -> -> 0 `i `uc ]
-"63
-[; ;main.c: 63:     ADCON1 = 0x50;
-[e = _BAUDCON -> -> 8 `i `uc ]
-"64
-[; ;main.c: 64:     IOCBN = 0x30;
-[e = _SPBRGH -> -> 0 `i `uc ]
-"65
-[; ;main.c: 65:     IOCBP = 0x30;
-[e = _SPBRGL -> -> 68 `i `uc ]
-"66
-[; ;main.c: 66:     IOCBF = 0;
-[e = _TXSTA -> -> 36 `i `uc ]
-"67
-[; ;main.c: 67:     IOCIE = 1;
-[e = _RCSTA -> -> 144 `i `uc ]
-"68
-[; ;main.c: 68:     RCIF = 0;
-[e = _FVRCON -> -> 0 `i `uc ]
-"69
-[; ;main.c: 69:     RCIE = 1;
-[e = _ADCON1 -> -> 80 `i `uc ]
-"70
-[; ;main.c: 70:     PEIE = 1;
-[e = _IOCBN -> -> 48 `i `uc ]
-"71
-[; ;main.c: 71:     GIE = 1;
-[e = _IOCBP -> -> 48 `i `uc ]
-"72
-[; ;main.c: 72:     reData = 8000000;
-[e = _IOCBF -> -> 0 `i `uc ]
-"73
-[; ;main.c: 73:     LATBbits.LATB0 = 1;
-[e = _IOCIE -> -> 1 `i `b ]
-"74
-[; ;main.c: 74: 
-[e = _RCIF -> -> 0 `i `b ]
-"75
-[; ;main.c: 75:     for (;;)
-[e = _RCIE -> -> 1 `i `b ]
-"76
-[; ;main.c: 76:     {
-[e = _PEIE -> -> 1 `i `b ]
-"77
-[; ;main.c: 77:         while(!SendFlag);
-[e = _GIE -> -> 1 `i `b ]
-"78
-[; ;main.c: 78: 
+[; ;main.c: 57:     APFCON0= 0x00;
 [e = _reData -> -> 8000000 `l `ul ]
-"79
-[; ;main.c: 79: 
+"58
+[; ;main.c: 58:     APFCON1= 0x00;
+[e = _ANSELA -> -> 9 `i `uc ]
+"59
+[; ;main.c: 59:     BAUDCON= 0x08;
+[e = _ANSELB -> -> 0 `i `uc ]
+"60
+[; ;main.c: 60:     SPBRGH = 0x00;
+[e = _TRISA -> -> 255 `i `uc ]
+"61
+[; ;main.c: 61:     SPBRGL = 0x44;
+[e = _TRISB -> -> 250 `i `uc ]
+"62
+[; ;main.c: 62:     TXSTA = 0x24;
+[e = _PORTA = _PORTB -> -> 0 `i `uc ]
+"63
+[; ;main.c: 63:     RCSTA = 0x90;
+[e = _APFCON0 -> -> 0 `i `uc ]
+"64
+[; ;main.c: 64:     FVRCON = 0x00;
+[e = _APFCON1 -> -> 0 `i `uc ]
+"65
+[; ;main.c: 65:     ADCON1 = 0xd0;
+[e = _BAUDCON -> -> 8 `i `uc ]
+"66
+[; ;main.c: 66:     IOCBN = 0x30;
+[e = _SPBRGH -> -> 0 `i `uc ]
+"67
+[; ;main.c: 67:     IOCBP = 0x30;
+[e = _SPBRGL -> -> 68 `i `uc ]
+"68
+[; ;main.c: 68:     IOCBF = 0;
+[e = _TXSTA -> -> 36 `i `uc ]
+"69
+[; ;main.c: 69:     IOCIE = 1;
+[e = _RCSTA -> -> 144 `i `uc ]
+"70
+[; ;main.c: 70:     RCIF = 0;
+[e = _FVRCON -> -> 0 `i `uc ]
+"71
+[; ;main.c: 71:     RCIE = PEIE = GIE = 1;
+[e = _ADCON1 -> -> 208 `i `uc ]
+"72
+[; ;main.c: 72:     LATBbits.LATB0 = 1;
+[e = _IOCBN -> -> 48 `i `uc ]
+"73
+[; ;main.c: 73: 
+[e = _IOCBP -> -> 48 `i `uc ]
+"74
+[; ;main.c: 74:     for (;;)
+[e = _IOCBF -> -> 0 `i `uc ]
+"75
+[; ;main.c: 75:     {
+[e = _IOCIE -> -> 1 `i `b ]
+"76
+[; ;main.c: 76:         while(!SendFlag);
+[e = _RCIF -> -> 0 `i `b ]
+"77
+[; ;main.c: 77: 
+[e = _RCIE -> = _PEIE -> = _GIE -> -> 1 `i `b `b `b ]
+"78
+[; ;main.c: 78:         ADCON0 = 0x01; SendAD();
 [e = . . _LATBbits 0 0 -> -> 1 `i `uc ]
-"81
-[; ;main.c: 81:         HD = ReadAD();
+"80
+[; ;main.c: 80: 
 {
 [e :U 370 ]
-"82
-[; ;main.c: 82:         SendUART(HD >> 4);
+"81
+[; ;main.c: 81:         sendData = reData;
 {
-"83
-[; ;main.c: 83:         SendUART(HD & 0xF);
+"82
+[; ;main.c: 82:         SendUART(sendData >> 18 & 0x3F);
 [e $U 373  ]
 [e :U 374 ]
 [e :U 373 ]
 [e $ ! != -> _SendFlag `i -> 0 `i 374  ]
 [e :U 375 ]
-"86
-[; ;main.c: 86:         ADCON0 = 0x0D;
+"84
+[; ;main.c: 84:         SendUART(sendData >> 6 & 0x3F);
 [e = _ADCON0 -> -> 1 `i `uc ]
-"87
-[; ;main.c: 87:         HD = ReadAD();
-[e = _HD ( _ReadAD ..  ]
-"88
-[; ;main.c: 88:         SendUART(HD >> 4);
-[e ( _SendUART (1 -> >> -> _HD `i -> 4 `i `uc ]
-"89
-[; ;main.c: 89:         SendUART(HD & 0xF);
-[e ( _SendUART (1 -> & -> _HD `i -> 15 `i `uc ]
-"92
-[; ;main.c: 92:         sendData = reData;
+[e ( _SendAD ..  ]
+"85
+[; ;main.c: 85:         SendUART(sendData & 0x3F);
 [e = _ADCON0 -> -> 13 `i `uc ]
-"93
-[; ;main.c: 93:         SendUART(sendData >> 18 & 0x3F);
-[e = _HD ( _ReadAD ..  ]
-"94
-[; ;main.c: 94:         SendUART(sendData >> 12 & 0x3F);
-[e ( _SendUART (1 -> >> -> _HD `i -> 4 `i `uc ]
-"95
-[; ;main.c: 95:         SendUART(sendData >> 6 & 0x3F);
-[e ( _SendUART (1 -> & -> _HD `i -> 15 `i `uc ]
-"98
-[; ;main.c: 98: 
+[e ( _SendAD ..  ]
+"87
+[; ;main.c: 87:         SendUART_Raw('\n');
 [e = _sendData _reData ]
-"99
-[; ;main.c: 99:         SendUART_Raw('\n');
+"88
+[; ;main.c: 88:         SendFlag = 0;
 [e ( _SendUART (1 -> & >> _sendData -> 18 `i -> -> -> 63 `i `l `ul `uc ]
-"100
-[; ;main.c: 100:         SendFlag = 0;
+"89
+[; ;main.c: 89:     }
 [e ( _SendUART (1 -> & >> _sendData -> 12 `i -> -> -> 63 `i `l `ul `uc ]
-"101
-[; ;main.c: 101:     }
+"90
+[; ;main.c: 90: }
 [e ( _SendUART (1 -> & >> _sendData -> 6 `i -> -> -> 63 `i `l `ul `uc ]
-"102
-[; ;main.c: 102: 
+"91
 [e ( _SendUART (1 -> & _sendData -> -> -> 63 `i `l `ul `uc ]
-"105
+"93
 [e ( _SendUART_Raw (1 -> -> 10 `ui `uc ]
-"106
+"94
 [e = _SendFlag -> -> 0 `i `uc ]
-"107
+"95
 }
 [e $U 370  ]
 [e :U 371 ]
 }
-"109
+"96
 [e :UE 369 ]
 }
 [a 1C 48 49 50 51 52 53 54 55 56 57 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 43 45 0 ]
